@@ -1,6 +1,19 @@
 <input type="text" id="url" size=64 />
 <button onclick="LoadVid()">Load Video</button> 
 <br /><br />Loop #<span id="loopCounter">0</span>
+<a id="twitter" href="#">Tweet it!</a>
+<script>
+!function(d,s,id){
+  var js,fjs=d.getElementsByTagName(s)[0];
+  var p=/^http:/.test(d.location)?'http':'https';
+  if(!d.getElementById(id)) {
+    js=d.createElement(s);
+    js.id=id;
+    js.src=p+'://platform.twitter.com/widgets.js';
+    fjs.parentNode.insertBefore(js,fjs);
+  }
+}(document, 'script', 'twitter-wjs');
+</script>
 <br /><br />
 <iframe id="yt"
         width="640" height="360" frameborder="0"
@@ -18,7 +31,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // Custom behaviour
 // YouTube player JS API reference:
 // https://developers.google.com/youtube/js_api_reference
-var player, loopCount = 0;
+var player, loopCount = 0, ytID;
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('yt', {events: {'onStateChange': ps}});
 }
@@ -30,7 +43,6 @@ function ps() {
   {
     player.playVideo();
     updateCounter();
-    // Update twitter button
   }
 }
 
@@ -61,6 +73,7 @@ function LoadVid() {
   }
   // Finally, load the video!
   player.loadVideoById(txt);
+  ytID = txt;
   updateCounter(1);
 }
 
@@ -68,5 +81,19 @@ function updateCounter(count) {
   // Display updated counter
   document.getElementById('loopCounter').innerHTML = count || ++loopCount;
   if(count) loopCount = count;
+}
+
+// Inspired by: https://dev.twitter.com/discussions/15343
+document.getElementById('twitter').onclick = function(e) {
+  var txt = 'text=', url = 'url=https://github.com/choufani/yt-looper';
+  if(loopCount) {
+    txt += [ 'I have been looping', player.getVideoUrl(),
+             'for', loopCount, 'times',
+             'using Simple YouTube video looper' ].join(' ');
+  }
+  else txt += 'Simple YouTube video looper';
+  var tweet = encodeURI(txt + '&' + url);
+  e.target.target = '_blank';
+  e.target.href = 'http://twitter.com/intent/tweet?' + tweet;
 }
 </script>
