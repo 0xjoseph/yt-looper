@@ -1,6 +1,12 @@
-<input type="text" id="url" size=64 /><button onclick="LoadVid()">Load Video</button> 
+<input type="text" id="url" size=64 />
+<button onclick="LoadVid()">Load Video</button> 
+<br /><br />Loop #<span id="loopCounter">0</span>
 <br /><br />
-<iframe id="yt" width="640" height="360" src="https://www.youtube.com/embed/?rel=0&enablejsapi=1" frameborder="0" enablejsapi="1" allowfullscreen></iframe>
+<iframe id="yt"
+        width="640" height="360" frameborder="0"
+        src="https://www.youtube.com/embed/?rel=0&enablejsapi=1"  
+        enablejsapi="1" 
+        allowfullscreen></iframe>
 
 <script type="text/javascript">
 // Must load the YouTube IFrame API before anything
@@ -23,7 +29,7 @@ function ps() {
   if(!s) // s == YT.PlayerState.ENDED == 0
   {
     player.playVideo();
-    ++loopCount;
+    updateCounter();
     // Update twitter button
   }
 }
@@ -55,5 +61,12 @@ function LoadVid() {
   }
   // Finally, load the video!
   player.loadVideoById(txt);
+  updateCounter(1);
+}
+
+function updateCounter(count) {
+  // Display updated counter
+  document.getElementById('loopCounter').innerHTML = count || ++loopCount;
+  if(count) loopCount = count;
 }
 </script>
