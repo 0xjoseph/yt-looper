@@ -1,0 +1,59 @@
+<input type="text" id="url" size=64 /><button onclick="LoadVid()">Load Video</button> 
+<br /><br />
+<iframe id="yt" width="640" height="360" src="https://www.youtube.com/embed/?rel=0&enablejsapi=1" frameborder="0" enablejsapi="1" allowfullscreen></iframe>
+
+<script type="text/javascript">
+// Must load the YouTube IFrame API before anything
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// Custom behaviour
+// YouTube player JS API reference:
+// https://developers.google.com/youtube/js_api_reference
+var player, loopCount = 0;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('yt', {events: {'onStateChange': ps}});
+}
+
+function ps() {
+  var s = player.getPlayerState();
+  // Loop Forever ^________^
+  if(!s) // s == YT.PlayerState.ENDED == 0
+  {
+    player.playVideo();
+    ++loopCount;
+    // Update twitter button
+  }
+}
+
+// Video loader
+function LoadVid() {
+  // Parse the input
+  var txt = document.getElementById('url').value;
+  // First check if it has the format an ID?
+  // Assuming a YouTube ID is at least 10-12 characters long (most are 11)
+  var re = /^[a-z0-9+\-_]{10,12}$/i
+  if(!re.test(txt)) {
+    // 2. Try to extract from an expected URL
+    // RegExp from: http://stackoverflow.com/a/8260383
+    re = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i;
+    var parseID = txt.match(re);
+    if(parseID) txt = parseID[1];
+    else { return 0; }
+  }
+  // At this stage we expect to have an ID similar to H0rIoFJvcoM
+  // If you're paranoid & need to verify if the ID exists, set imParanoid = !0
+  // Paranoid check is inspired by: http://webapps.stackexchange.com/a/54448
+  var imParanoid = 0;
+  if(imParanoid) {
+     var x = new XMLHttpRequest();
+     x.open('GET', 'http://gdata.youtube.com/feeds/api/videos/' + txt, 0);
+     x.send(); // Blocking
+     if(x.status != 200) return 0;
+  }
+  // Finally, load the video!
+  player.loadVideoById(txt);
+}
+</script>
