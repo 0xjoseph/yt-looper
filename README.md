@@ -7,6 +7,8 @@ I wanted to indefinitelty loop a YouTube video. So I googled, and I got sites li
 However, since I'm in Lebanon, and my Internet is ver slow and limited, I couldn't afford the luxury of such sites, which embed the video
 and download everytime.
 
-So I started looking into YouTube Player JS API. And decided to do this.
+So I started looking into YouTube Player JS API. And decided to write code which allows me to automatically replay a YouTube vid locally, without going back to the server.
 
 I'll have to do a more formal README, but anyway, that's the story.
+
+Cheers.
