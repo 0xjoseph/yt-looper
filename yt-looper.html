@@ -3,18 +3,6 @@ Copy YouTube URL (long/short), embed URL or just YouTube video ID and load<br />
 <button onclick="LoadVid()">Load Video</button> 
 <br /><br />Loop #<span id="loopCounter">0</span>
 <a id="twitter" href="#">Tweet it!</a>
-<script>
-!function(d,s,id){
-  var js,fjs=d.getElementsByTagName(s)[0];
-  var p=/^http:/.test(d.location)?'http':'https';
-  if(!d.getElementById(id)) {
-    js=d.createElement(s);
-    js.id=id;
-    js.src=p+'://platform.twitter.com/widgets.js';
-    fjs.parentNode.insertBefore(js,fjs);
-  }
-}(document, 'script', 'twitter-wjs');
-</script>
 <br /><br />
 <iframe id="yt"
         width="640" height="360" frameborder="0"
